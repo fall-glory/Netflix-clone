@@ -7,9 +7,11 @@ export const useProps = (fetchUrl: string) => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [trailerUrl, setTrailerUrl] = useState<string | null>("");
 
+  // APIの取得
   useEffect(() => {
     async function fetchData() {
       const request = await axios.get(fetchUrl);
+      // データの整形
       const movies = request.data.results.map((movie: Movie) => ({
         id: movie.id,
         name: movie.name,
@@ -26,6 +28,7 @@ export const useProps = (fetchUrl: string) => {
     if (trailerUrl) {
       setTrailerUrl("");
     } else {
+      // 無ければAPIを叩いて予告映像を取得する
       const moviePlayUrl = await axios.get(requests.fetchMovieVideos(movie.id));
       setTrailerUrl(moviePlayUrl.data.results[0]?.key);
     }
